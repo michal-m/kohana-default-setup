@@ -16,3 +16,6 @@
 [submodule "modules/image"]
 	path = modules/image
 	url = git@github.com:kohana/image.git
+[submodule "modules/minion"]
+	path = modules/minion
+	url = git@github.com:kohana/minion.git
