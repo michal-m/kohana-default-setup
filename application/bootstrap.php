@@ -22,7 +22,7 @@ else
  * @link http://kohanaframework.org/guide/using.configuration
  * @link http://www.php.net/manual/timezones
  */
-date_default_timezone_set('America/Chicago');
+date_default_timezone_set('Europe/London');
 
 /**
  * Set the default locale.
@@ -30,7 +30,7 @@ date_default_timezone_set('America/Chicago');
  * @link http://kohanaframework.org/guide/using.configuration
  * @link http://www.php.net/manual/function.setlocale
  */
-setlocale(LC_ALL, 'en_US.utf-8');
+setlocale(LC_ALL, 'en_GB.utf-8');
 
 /**
  * Enable the Kohana auto-loader.
@@ -68,7 +68,7 @@ mb_substitute_character('none');
 /**
  * Set the default language
  */
-I18n::lang('en-us');
+I18n::lang('en-gb');
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {
@@ -103,7 +103,10 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/kohana/',
+	'base_url'		=> '/',
+	'index_file'	=> FALSE,
+	'caching'		=> Kohana::$environment === Kohana::PRODUCTION,
+	'profile'		=> Kohana::$environment !== Kohana::PRODUCTION,
 ));
 
 /**
@@ -121,22 +124,40 @@ Kohana::$config->attach(new Config_File);
  */
 Kohana::modules(array(
 	// 'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
+	'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'database'   => MODPATH.'database',   // Database access
+	'database'   => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
-	// 'minion'     => MODPATH.'minion',     // CLI Tasks
-	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+	'minion'     => MODPATH.'minion',     // CLI Tasks
+	'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
 
 /**
- * Set the routes. Each route must have a minimum of a name, a URI and a set of
- * defaults for the URI.
+ * Load Devtools module only if in DEVELOPMENT
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
-	));
+if (Kohana::$environment === Kohana::DEVELOPMENT)
+{
+	Kohana::modules(array_merge(
+		Kohana::modules(),
+		array('devtools' => MODPATH.'devtools')
+		));
+}
+
+/**
+ * Cookie configuration
+ *
+ * @link http://kohanaframework.org/3.3/guide-api/Cookie
+ */
+Cookie::$domain     = (PHP_SAPI != 'cli' AND isset($_SERVER['HTTP_HOST']) AND strpos($_SERVER['HTTP_HOST'], '.')) ? $_SERVER["HTTP_HOST"] : '';
+Cookie::$path       = Kohana::$base_url;
+Cookie::$expiration = 0;
+Cookie::$secure     = FALSE;
+Cookie::$httponly   = TRUE;
+Cookie::$salt       = '<change this>';
+
+/**
+ * Load routes file
+ */
+require APPPATH . 'routes' . EXT;
