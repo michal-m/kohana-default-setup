@@ -146,6 +146,18 @@ if (Kohana::$environment === Kohana::DEVELOPMENT)
 }
 
 /**
+ * Cookie configuration
+ *
+ * @link http://kohanaframework.org/3.3/guide-api/Cookie
+ */
+Cookie::$domain     = (PHP_SAPI != 'cli' AND isset($_SERVER['HTTP_HOST']) AND strpos($_SERVER['HTTP_HOST'], '.')) ? $_SERVER["HTTP_HOST"] : '';
+Cookie::$path       = Kohana::$base_url;
+Cookie::$expiration = 0;
+Cookie::$secure     = FALSE;
+Cookie::$httponly   = TRUE;
+Cookie::$salt       = '<change this>';
+
+/**
  * Load routes file
  */
 require APPPATH . 'routes' . EXT;
