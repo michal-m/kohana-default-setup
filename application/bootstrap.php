@@ -135,6 +135,19 @@ Kohana::modules(array(
 	));
 
 /**
+ * Load Devtools module only if in DEVELOPMENT
+ */
+if (Kohana::$environment === Kohana::DEVELOPMENT)
+{
+	Kohana::modules(array_merge(
+		Kohana::modules(),
+		array('devtools' => MODPATH.'devtools')
+		));
+}
+
+Kohana::modules($modules);
+
+/**
  * Load routes file
  */
 require APPPATH . 'routes' . EXT;
