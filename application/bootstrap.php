@@ -145,8 +145,6 @@ if (Kohana::$environment === Kohana::DEVELOPMENT)
 		));
 }
 
-Kohana::modules($modules);
-
 /**
  * Load routes file
  */
