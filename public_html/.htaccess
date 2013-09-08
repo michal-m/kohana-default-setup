@@ -1,3 +1,5 @@
+SetEnv KOHANA_ENV PRODUCTION
+
 # Turn on URL rewriting
 RewriteEngine On
 

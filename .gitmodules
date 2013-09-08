@@ -28,3 +28,6 @@
 [submodule "modules/userguide"]
 	path = modules/userguide
 	url = git@github.com:kohana/userguide.git
+[submodule "modules/devtools"]
+	path = modules/devtools
+	url = git@github.com:michal-m/kohana-modules-devtools.git
