@@ -88,6 +88,14 @@ if (isset($_SERVER['KOHANA_ENV']))
 }
 
 /**
+ * Set the error page template
+ */
+if (Kohana::$environment !== Kohana::DEVELOPMENT)
+{
+	Kohana_Exception::$error_view = 'error';
+}
+
+/**
  * Initialize Kohana, setting the default options.
  *
  * The following options are available:
